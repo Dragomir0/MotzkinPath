@@ -1,36 +1,31 @@
 # MotzkinPath
 
-En combinatoire, un *chemin de Motzkin* est un chemin de longueur `n` qu'on peut tracer sur une grille et qui respecte les contraintes suivantes:
+In combinatorics, a **Motzkin path** is a path of length `n` that can be traced on a grid following these constraints:
 
-* Seulement 3 déplacements sont permis: en direction *nord-est* `(1,1)`, en
-  direction *est* `(1,0)` et en direction *sud-est* `(1,-1)`;
-* Le chemin doit commencer au point `(0,0)`;
-* Le chemin doit terminer au point `(n,0)`;
-* Le chemin ne peut jamais passer sous le segment qui relie les points `(0,0)`
-  et `(n,0)`.
+## Allowed moves:
+- ↗️ `u` (*up*): step northeast `(1,1)`
+- ➡️ `r` (*right*): step east `(1,0)`
+- ↘️ `d` (*down*): step southeast `(1,-1)`
 
-Par exemple, l'ensemble de tous les chemins de Motzkin de longueur `4` est
-illustré ci-bas (tiré de la [page de Wikipedia sur les nombres de
-Motzkin](https://en.wikipedia.org/wiki/Motzkin_number)):
+## Constraints:
+* The path must start at point `(0,0)`
+* The path must end at point `(n,0)`
+* The path must never go below the line segment connecting `(0,0)` and `(n,0)`
 
-![Les 9 chemins de Motzkin de longueur
-4](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Motzkin4.svg/1280px-Motzkin4.svg.png)
+Motzkin paths of length 4 example (from [Wikipedia](https://en.wikipedia.org/wiki/Motzkin_number)):
 
-Le programme peut etre invoqué à l'aide de la syntaxe suivante
+![Motzkin paths of length 4](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Motzkin4.svg/1280px-Motzkin4.svg.png)
+
+The program can be invoked with the following syntax:
 
 ```sh
 $ ./motzkin LETTRES
 ```
+Where LETTERS is a sequence of characters from the set {u, d, r} and generates an SVG file printed to stdout, representing the corresponding Motzkin path, with moves interpreted as follows:
 
-où `LETTRES` est une suite de lettres choisies parmi l'ensemble `{u,d,r}` et
-devra produire sur `stdout` un fichier SVG représentant le mot de Motzkin dont
-les déplacements sont interprétés comme suit:
 
-* `u` (*up*): déplacement en direction *nord-est*;
-* `d` (*down*): déplacement en direction *sud-est*;
-* `r` (*right*): déplacement en direction *est*.
 
-## Exemples de fonctionnement
+## Examples
 
 ```sh
 $ ./motzkin urudd > urudd.svg
@@ -44,17 +39,24 @@ $  ./motzkin uuuuuuuuuddurrruuuurddrrrdddddduuddddddr > test.svg
 
 ![Le chemin de Motzkin `uuuuuuuuuddurrruuuurddrrrdddddduuddddddr`](./test.svg)
 
-* Si le programme n'a pas d'argument fourni, le programme affiche sur
-  `stderr` le message `"error: wrong number of arguments"`, affiche le manuel
-  d'utilisation et arrête son exécution;
-* Si le mot passé utilise une lettre invalide telle que `a` (différente de `u`,
-  `d` et `r`), alors le programme affiche sur `stderr` le message "error:
-  unrecognized step a", affiche le manuel d'utilisation et arrêter son
-  exécution;
-* Si le mot de Motzkin est invalide (parce qu'il passe sous le segment `(0,0) -
-  (n,0)` ou parce qu'il ne termine pas en `(n,0)`), un message d'erreur en
-  conséquence (`"error: the path cannot go below the horizontal axis"`,
-  `"error: the path cannot end above the horizontal axis"`) est affiché,
-  suivi du manuel d'utilisation, puis le programme arrête son exécution.
-* Si le chemin est trop long (largeur qui dépasse 40), le programme s'arrete en affichant l'erreur (`"error:
-  the path cannot be wider than 40"`) et le manuel d'utilisation.
+## Error Handling
+
+If no argument is provided, the program prints
+
+-> `error: wrong number of arguments` 
+
+If an invalid letter (like a) is used, the program prints 
+
+-> `"error: unrecognized step a" to stderr`
+
+If the path is invalid (goes below the horizontal axis or does not end at (n,0)), it prints:
+
+-> `"error: the path cannot go below the horizontal axis"`
+
+-> `"error: the path cannot end above the horizontal axis"`
+
+If the path is too wide (more than 40 units), the program stops with the error:
+
+-> `"error: the path cannot be wider than 40"`
+
+Each error is followed by usage instructions and termination.
